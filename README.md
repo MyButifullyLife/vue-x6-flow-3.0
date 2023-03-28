@@ -3,6 +3,9 @@
 **基于antv-x6 vue版本**
 vue3.x+ element-plus +antv-x6 
  
+ 
+# vue2.0 地址
+https://github.com/MyButifullyLife/vue-x6-flow
 
 ## 文档地址  
 https://x6.antv.vision/zh/docs/api/graph/graph
