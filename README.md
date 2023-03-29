@@ -7,10 +7,32 @@ vue3.x+ element-plus +antv-x6
 # vue2.0 地址
 https://github.com/MyButifullyLife/vue-x6-flow
 
+## vite 需配置
+ 
+···
+
+ 
+ 坑：
+// vite.config.js
+resolve: {
+alias: [
+{
+find: '@antv/x6',
+replacement: '@antv/x6/lib'
+},
+{
+find: '@antv/x6-vue-shape',
+replacement: '@antv/x6-vue-shape/lib',
+},
+]
+}
+···
+
+
 ## 文档地址  
 https://x6.antv.vision/zh/docs/api/graph/graph
 
-## 本项目效果图
+## 效果图
 ![image](https://user-images.githubusercontent.com/16436933/149902393-4a9fd58f-eadd-4a5f-af71-81076d0364d0.png)
 
 ## 流向动画
@@ -35,23 +57,4 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 QQ：251275985  wx：gjh251275985
 
 
-## vite 需配置
- 
-···
- 
- 
- 坑：
-// vite.config.js
-resolve: {
-alias: [
-{
-find: '@antv/x6',
-replacement: '@antv/x6/lib'
-},
-{
-find: '@antv/x6-vue-shape',
-replacement: '@antv/x6-vue-shape/lib',
-},
-]
-}
-···
+
