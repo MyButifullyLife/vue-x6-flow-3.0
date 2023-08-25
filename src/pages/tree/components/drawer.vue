@@ -1,20 +1,22 @@
 <template>
-  <el-dialog
-      title="提示"
+  <el-drawer
       v-model="visible"
       width="900px"
+      :modal="false"
   >
     <section>
       <el-input v-model="name" style="width: 300px" placeholder="编辑名字"></el-input>
-      <el-button type="success" @click="editFn">
+      <el-button type="success" @click="editPropsFn('name')">
         修改名字
       </el-button>
       <br>
       <br>
       连线label:  <el-input v-model="lineLabel" style="width: 100px" placeholder="分支名字"></el-input>
+      <el-button type="success" @click="editFn('lineLabel')">
+        修改连线
+      </el-button>
       <br>
       <br>
-      高度：<el-input v-model="height" style="width: 100px" placeholder="高度"></el-input>
       <el-button type="primary" @click="addFn">
         新增节点
       </el-button>
@@ -26,7 +28,7 @@
       </el-button>
     </section>
 
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>
@@ -43,14 +45,16 @@ export default {
   methods: {
     init(node) {
       this.nodeItem = JSON.parse(JSON.stringify(node))
-      this.name = this.nodeItem.data.data.name
+      this.name = this.nodeItem.data.props.name
       this.lineLabel = '新增'
-      this.height = 50
       this.visible = true
     },
-    editFn() {
-      this.nodeItem.data.data.name = this.name
-      this.$emit('edit', this.nodeItem)
+    editPropsFn(key) {
+      this.$emit('editProps',this.nodeItem.id, key, this.name)
+      this.visible = false
+    },
+    editFn(key) {
+      this.$emit('edit',this.nodeItem.id, key, this.lineLabel)
       this.visible = false
     },
     addFn() {

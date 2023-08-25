@@ -1,31 +1,36 @@
 <template>
   <div id="coverCot" style="width: 100vw; height: 100vh; overflow: hidden">
     <div class="">
-      <el-button type="primary" @click="initTree"> 初始化</el-button>
+      <el-button type="primary" @click="initTree">初始化</el-button>
+      <el-button type="primary" @click="save">保存</el-button>
+      <el-button type="primary" @click="getSave">加载保存</el-button>
     </div>
     <section class="section-cot" style="width: 100%; height: 100%">
       <div id="container">
         <div id="draw-cot" />
       </div>
     </section>
-    <Drawer ref="DrawerRef" @add="addNodeFn" @del="delFn" @edit="editFn"></Drawer>
+    <Drawer ref="DrawerRef" @add="addNodeFn" @del="delFn" @edit="editFn"  @editProps="editPropsFn"></Drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-
   import { onMounted, ref } from 'vue';
   import Hierarchy from '@antv/hierarchy';
   import { $Bus } from '@/global';
-  import {generateUniqueId} from '@/utils'
+  import { generateUniqueId } from '@/utils';
   import initGraph from './graph';
-
+  const Drawer = defineAsyncComponent(() => import('./components/drawer.vue'));
   let _Graph: any;
 
   const DrawerRef = ref();
 
   $Bus.$Bus.on('nodeOpenConfig', (node) => {
     DrawerRef.value.init(node);
+  });
+
+  $Bus.$Bus.on('nodeHeightChange', (item) => {
+      editFn(item.id, 'height', item.height);
   });
 
   let Tree: graphData;
@@ -36,16 +41,15 @@
     type: number;
     data: object;
   }
-  const Drawer = defineAsyncComponent(() => import('./drawer.vue'));
 
   const initTree = () => {
     Tree = {
       id: generateUniqueId(),
       children: [],
       type: 1,
-      data: {
+      height: 40,
+      props: {
         name: '初始化',
-        height: 40,
       },
     };
 
@@ -59,7 +63,7 @@
         return 180;
       },
       getHeight(d) {
-        return d.data.height ? parseInt(d.data.height) : 40;
+        return d.height ? parseInt(d.height) : 40;
       },
       getHGap() {
         return 30;
@@ -75,14 +79,16 @@
 
     const traverse = (data) => {
       if (data) {
+        // 根据node type 类型决定用哪个节点模板
+        const shape = `dag-node${data.data.type}`;
         model.nodes?.push({
           id: `${data.id}`,
           x: data.x + 700,
           y: data.y + 200,
-          shape: 'dag-node',
+          shape,
           data: data.data,
           width: 180,
-          height: data.data.data.height || 40,
+          height: data.data.height || 40,
           ports: {
             groups: {
               bottom: {
@@ -134,7 +140,7 @@
                     stroke: '#73d13d',
                   },
                   text: {
-                    text: item.data.data.lineLabel || '',
+                    text: item.data.lineLabel || '',
                   },
                 },
               },
@@ -191,14 +197,22 @@
     return p;
   };
 
-  const editFn = (node) => {
+  const editPropsFn = (id, key, value) => {
     // 改变cell data赋值
     // 触发 database 组件的监听
-    const treeNode = getTreeObjFn(Tree, node.id);
-    treeNode.data = node.data.data;
-    let cell = _Graph.getCellById(node.id);
-    cell.data = node.data.data;
-    // this.layoutFn()
+    const treeNode = getTreeObjFn(Tree, id);
+    treeNode.props[key] = value;
+    let cell = _Graph.getCellById(id);
+    cell.data = treeNode;
+    // layoutFn()
+  };
+  const editFn = (id, key, value) => {
+    // 改变cell data赋值
+    // 触发 database 组件的监听
+    const treeNode = getTreeObjFn(Tree, id);
+    treeNode[key] = value;
+
+    layoutFn();
   };
 
   const delFn = (node) => {
@@ -220,16 +234,27 @@
     treeNode.children.push({
       type: 2,
       id: new Date().getTime() + '',
-      data: {
+      height: height || 40,
+      lineLabel: lineLabel,
+      props: {
         name: '新增',
-        height: height || 40,
-        lineLabel: lineLabel,
       },
       children: [],
     });
 
     layoutFn();
   };
+
+  const save = ()=>{
+      window.localStorage.setItem('x6-tree', JSON.stringify(Tree))
+  }
+  const getSave = ()=>{
+     const T =   window.localStorage.getItem('x6-tree')
+      if(T){
+          Tree = JSON.parse(T)
+          layoutFn()
+      }
+  }
 
   onMounted(() => {
     _Graph = initGraph();

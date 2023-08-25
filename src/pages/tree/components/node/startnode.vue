@@ -11,7 +11,7 @@
 
 let Node = ''
 
-import { $Bus } from '@/global';
+import { $Bus } from '@/global.js';
 
 export default {
   name: 'database',
@@ -27,21 +27,24 @@ export default {
   },
   methods: {
     iconClick() {
+      console.log($Bus)
       $Bus.$Bus.emit('nodeOpenConfig', this.node)
     }
   },
   mounted() {
+    const methods = this.$options.methods;
+    for (let key in methods) {
+      methods[key].bind(this);
+    }
     const self = this
     this.node = Node = this.getNode()
 
-    this.name = Node.data.data.name
+    this.name = Node.data.props.name
     // 监听数据改变事件
     this.node.on('change:data', ({current}) => {
       self.name = current.name
       self.status = current.status
     })
-
-
   }
 }
 </script>

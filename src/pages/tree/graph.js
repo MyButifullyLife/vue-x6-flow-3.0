@@ -1,17 +1,19 @@
 import { Graph, Path } from '@antv/x6';
-import database from './database.vue';
+import startnode from './components/node/startnode.vue';
+import common from './components/node/common.vue';
 const registerNode = () => {
+  
   Graph.registerNode(
-    'dag-node',
+    'dag-node1',
     {
       inherit: 'vue-shape',
       width: 180,
       height: 36,
       component: {
         template: `
-            <database/>`,
+            <startnode/>`,
         components: {
-          database,
+          startnode,
         },
       },
       ports: {
@@ -44,6 +46,54 @@ const registerNode = () => {
       },
     },
     true
+  );
+  
+  
+  
+  
+  Graph.registerNode(
+  'dag-node2',
+  {
+    inherit: 'vue-shape',
+    width: 180,
+    height: 36,
+    component: {
+      template: `
+            <common/>`,
+      components: {
+        common,
+      },
+    },
+    ports: {
+      groups: {
+        top: {
+          position: 'top',
+          attrs: {
+            circle: {
+              r: 4,
+              magnet: true,
+              stroke: '#C2C8D5',
+              strokeWidth: 1,
+              fill: '#fff',
+            },
+          },
+        },
+        bottom: {
+          position: 'bottom',
+          attrs: {
+            circle: {
+              r: 4,
+              magnet: true,
+              stroke: '#C2C8D5',
+              strokeWidth: 1,
+              fill: '#fff',
+            },
+          },
+        },
+      },
+    },
+  },
+  true
   );
 
   Graph.registerEdge(
