@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "serve": "vite",
     "start": "npm run dev",
     "start:test": "npm run dev -- --mode test",
     "build": "vue-tsc --noEmit && vite build",

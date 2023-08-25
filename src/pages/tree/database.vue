@@ -11,7 +11,7 @@
 
 let Node = ''
 
-import {$Bus} from '@/global.js'
+import { $Bus } from '@/global';
 
 export default {
   name: 'database',

@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: () => import('@/pages/index.vue'),
+    component: () => import('@/pages/tree/index.vue'),
     // 需要layout的页面
   },
 ];
