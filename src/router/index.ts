@@ -3,8 +3,19 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
+    component: () => import('@/pages/home.vue'),
+  },
+  {
+    path: '/tree',
     component: () => import('@/pages/tree/index.vue'),
-    // 需要layout的页面
+  },
+  {
+    path: '/flow',
+    component: () => import('@/pages/flow/index.vue'),
+  },
+  {
+    path: '/dag',
+    component: () => import('@/pages/dag/index.vue'),
   },
 ];
 
