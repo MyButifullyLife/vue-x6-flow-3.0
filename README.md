@@ -7,6 +7,9 @@ vue3.x+ element-plus +antv-x6
 # vue2.0 地址
 https://github.com/MyButifullyLife/vue-x6-flow
 
+# npm install 问题
+如遇到版本下载问题，请参照本项目的packjson里面依赖的版本
+
 ## vite 需配置
  
 ···
