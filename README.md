@@ -10,7 +10,7 @@ https://github.com/MyButifullyLife/vue-x6-flow
 # npm install 问题
 如遇到版本下载问题，请参照本项目的packjson里面依赖的版本
 
-## vite 需配置
+## 坑1  vite 需配置代码，参考本项目vite 配置
  
 ···
 
