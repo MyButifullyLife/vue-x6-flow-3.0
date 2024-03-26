@@ -1,3 +1,5 @@
+哎，github 总受抽风打不开很烦！ 生命短暂，用梯子吧 https://laiyun.xyz/#/register?code=SVH5EI6r
+
 # vue-x6-flow-3.0
 
 **基于antv-x6 vue版本**
